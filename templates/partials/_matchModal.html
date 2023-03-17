@@ -1,0 +1,69 @@
+<div class="modal is-active">
+  <div class="modal-background cancel"></div>
+  <div class="modal-content is-vcentered">
+    <div class="box content">
+      <h2 class="is-2 mb-4">Registrera resultat</h2>
+      <form action="/result" method="POST">
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Spelare 1:</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <div class="select player-select-1">
+                  <select name="player1">
+                    <option value="" selected>--Välj spelare--</option>
+                    {% for player in players %}
+                    <option value="{{ player.id }}">{{ player.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <input class="input" type="number" name="player1_score" placeholder="Poäng">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Spelare 2:</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <div class="select player-select-2">
+                  <select name="player2">
+                    <option value="" selected>--Välj spelare--</option>
+                    {% for player in players %}
+                    <option value="{{ player.id }}">{{ player.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <input class="input" type="number" name="player2_score" placeholder="Poäng">
+              </div>
+            </div>
+          </div>
+        </div>
+        <nav class="level is-mobile">
+          <div class="level-left"></div>
+          <div class="level-right">
+            <div class="level-item mt-4">
+              <input class="button is-link" type="submit" value="Spara">
+            </div>
+            <div class="level-item mt-4">
+              <a type="button" class="button cancel">Avbryt</a>
+            </div>
+          </div>
+        </nav>
+      </form>
+    </div>
+  </div>
+</div>

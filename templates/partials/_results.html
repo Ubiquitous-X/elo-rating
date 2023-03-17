@@ -1,0 +1,21 @@
+{% if results %}
+  {% if results|length < 10 %}
+  <p class="title is-5 ml-2">Senaste matcherna</p>
+  {% else %}
+  <p class="title is-5 ml-2">10 senaste matcherna</p>
+  {% endif %}
+  <table class="table">
+    <tbody>
+      {% for result in results %}
+        <tr>
+          <td>{{ result.player1.name }}</td>
+          <td>vs.</td>
+          <td>{{ result.player2.name }}</td>
+          <td class="has-text-right">{{ result.player1_score }}-{{ result.player2_score }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p class="title is-5 ml-2">Inga matcher registrerade</p>
+{% endif %}

@@ -1,0 +1,7 @@
+__pycache__
+.git
+.env
+*.code-workspace
+venv
+database.db
+populate_db.py

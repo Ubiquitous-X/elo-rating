@@ -1,0 +1,32 @@
+<nav class="navbar" role="navigation" x-data="{ isOpen: false }" @click.away="isOpen = false">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="#">
+      <img src="{{ url_for('static', filename='/img/esem_logo.png') }}">
+    </a>
+    <div class="navbar-item has-text-centered">
+      <p class="title">Kvitten Open</p>
+    </div>
+    <a role="button" class="navbar-burger" :class="{ 'is-active': isOpen }" @click="isOpen = !isOpen">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu" :class="{ 'is-active': isOpen }">
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-primary">
+            <strong>Spelare</strong>
+          </a>
+          <a class="button is-link">
+            <strong>Resultat</strong>
+          </a>
+          <a class="button is-dark">
+            Regler
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

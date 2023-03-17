@@ -1,0 +1,18 @@
+.navbar {
+    height: 80px;
+  }
+
+.player-select-1 select,
+.player-select-2 select {
+  width: 20rem;
+  }
+
+  .alert {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .alert.hide {
+    opacity: 0;
+    transition-delay: 3s;
+  }
