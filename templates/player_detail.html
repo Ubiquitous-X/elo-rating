@@ -5,7 +5,7 @@
   <div class="column">
     <div class="card">
       <div class="card-content">
-        <p class="title is-4">Rank</p>
+        <p class="title is-4"><span class="icon"><i class="fas fa-ranking-star fa-xs"></i></span> Rank</p>
         <p class="subtitle is-5">{{ player.rank() }}</p>
       </div>
     </div>
@@ -13,7 +13,7 @@
   <div class="column">
     <div class="card">
       <div class="card-content">
-        <p class="title is-4">Rating</p>
+        <p class="title is-4"><span class="icon"><i class="fas fa-star fa-xs"></i></span> Rating</p>
         <p class="subtitle is-5">{{ player.rating|round|int }}</p>
       </div>
     </div>
@@ -21,7 +21,7 @@
   <div class="column">
     <div class="card">
       <div class="card-content">
-        <p class="title is-4">Vinster</p>
+        <p class="title is-4"><span class="icon"><i class="fas fa-arrow-trend-up fa-xs"></i></span> Vinster</p>
         <p class="subtitle is-5">{{ player.wins }}</p>
       </div>
     </div>
@@ -29,7 +29,7 @@
   <div class="column">
     <div class="card">
       <div class="card-content">
-        <p class="title is-4">Förluster</p>
+        <p class="title is-4"><span class="icon"><i class="fas fa-arrow-trend-down fa-xs"></i></span> Förluster</p>
         <p class="subtitle is-5">{{ player.losses }}</p>
       </div>
     </div>
@@ -37,7 +37,7 @@
   <div class="column">
     <div class="card">
       <div class="card-content">
-        <p class="title is-4">Vinstratio</p>
+        <p class="title is-4"><span class="icon"><i class="fas fa-percent fa-xs"></i></span> Vinstratio</p>
         <p class="subtitle is-5">{{ player.win_ratio() }}%</p>
       </div>
     </div>
