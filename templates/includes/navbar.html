@@ -16,6 +16,7 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
+          {% if request.path == url_for('index') %}
           <a class="button is-primary" 
             href="/registrera"
             hx-get="/spelare"
@@ -23,11 +24,11 @@
             hx-target="#matchModal"
             hx-swap="innerHTML">
             <strong>Registrera match</strong>
-          </a>
+          </a>          
           <a class="button is-link"
             href="{{ url_for('get_results') }}" >
             <strong>Alla resultat</strong>
-          </a>
+          </a>          
           <a class="button is-warning" 
             href="/ny_spelare"
             hx-get="/ny_spelare"
@@ -39,7 +40,12 @@
           <a class="button is-dark">
             Regler & info
           </a>
+          {% endif %}
           {% if player %}
+          <a class="button is-link"
+            href="{{ url_for('index') }}" >
+          <strong>Tillbaka</strong>
+          </a> 
           <form action="{{ url_for('deactivate_player', player_slug=player.slug) }}" 
             method="post"
             onsubmit="return confirm('OBS! En inaktiverad spelare kan aldrig läggas till igen!\n\nÄr du säker på att du vill inaktivera {{ player.name }}?')">
@@ -49,6 +55,10 @@
           </form>          
           {% endif %}
           {% if request.path == url_for('get_results') %}
+          <a class="button is-link"
+            href="{{ url_for('index') }}" >
+          <strong>Tillbaka</strong>
+          </a> 
           <form action="{{ url_for('reset_results') }}" 
             method="post"
             onsubmit="return confirm('VARNING!\n\nDu är på väg att nollställa databasen. Alla resultat raderas och alla spelare får sin rating nollställd.\n\nÄr du verkligen säker?')">
