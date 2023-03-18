@@ -32,7 +32,7 @@ class Player(db.Model):
         return self.wins * 100 // self.num_games()
 
     def rank(self):
-        players = Player.query.order_by(Player.rating.desc()).all()
+        players = Player.query.filter_by(is_active=True).order_by(Player.rating.desc()).all()
         return players.index(self) + 1
 
     def num_games(self):
