@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="title is-2">{{ player.name }}</h1>
+<div class="columns">
+  <div class="column">
+    <div class="card">
+      <div class="card-content">
+        <p class="title is-4">Rank</p>
+        <p class="subtitle is-5">{{ player.rank() }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+      <div class="card-content">
+        <p class="title is-4">Rating</p>
+        <p class="subtitle is-5">{{ player.rating|round|int }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+      <div class="card-content">
+        <p class="title is-4">Vinster</p>
+        <p class="subtitle is-5">{{ player.wins }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+      <div class="card-content">
+        <p class="title is-4">Förluster</p>
+        <p class="subtitle is-5">{{ player.losses }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+      <div class="card-content">
+        <p class="title is-4">V/F</p>
+        <p class="subtitle is-5">{{ player.win_ratio() }}%</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="is-divider" style="width: 100%; height: 50px;"></div>
+<canvas id="ratingChart" style="width: 100%; height: 300px;"></canvas>
+<script>
+  var ctx = document.getElementById('ratingChart').getContext('2d');
+  var rating_history = JSON.parse('{{ rating_history_json|safe }}');
+  var dates = [];
+  var ratings = [];
+
+  for (var i = 0; i < rating_history.length; i++) {
+    var date_created = new Date(rating_history[i].date_created);
+    var formatted_date = date_created.getFullYear() + '-' + (date_created.getMonth() + 1).toString().padStart(2, '0') + '-' + date_created.getDate().toString().padStart(2, '0');
+    dates.push(formatted_date);
+    ratings.push(rating_history[i].rating);
+  }
+
+  var chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: dates,
+      datasets: [{
+        label: 'Rating',
+        data: ratings,
+        backgroundColor: '#209cee',
+        borderColor: '#3273dc',
+        borderWidth: 2,
+        tension: 0.1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: false
+        },
+        legend: {
+          display: true,
+          labels: {
+            font: {
+              size: 16,
+              weight: 'bold'
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            font: {
+              size: 14,
+              weight: 'bold'
+            }
+          }
+        },
+        y: {
+          ticks: {
+            beginAtZero: true,
+            font: {
+              size: 14,
+              weight: 'bold'
+            }
+          }
+        }
+      }
+    }
+  });
+</script>
+{% endblock %}

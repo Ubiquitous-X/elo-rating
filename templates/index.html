@@ -8,14 +8,7 @@
   <div class="column">
     <div class="is-pulled-right">
       {% include 'partials/_results.html' %}
-      <button class="button is-primary ml-3"
-      hx-get="/get_players"
-      hx-trigger="click"
-      hx-target="#matchModal"
-      hx-swap="innerHTML">
-      <strong>Registrera match</strong>
-      </button>
-      <div class="mt-3 ml-2">
+      <div class="mt-3">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <div class="alert">
@@ -31,7 +24,6 @@
     </div>
   </div>
 </div>
-<div id="matchModal"></div>
 {% else %}
 <p class="title is-4">Det finns inga spelare tillagda</p>
 {% endif %}

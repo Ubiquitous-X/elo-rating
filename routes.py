@@ -1,18 +1,79 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from app import app, db
 from models import Player, Result, PlayerRating
+from slugify import slugify
+from sqlalchemy import func
+import json
 
 @app.route('/')
 def index():
-    players = Player.query.order_by(Player.rating.desc()).all()
-    results = Result.query.order_by(Result.date_played.desc()).limit(10).all()
+    players = Player.query.filter_by(is_active=True).order_by(Player.rating.desc()).all()
+    results = Result.query.order_by(Result.date_played.desc()).limit(5).all()
     return render_template('index.html', players=players, results=results)
 
 
-@app.route('/get_players', methods=['GET'])
+@app.route('/spelare', methods=['GET'])
 def get_players():
     players = Player.query.filter_by(is_active=True).order_by(Player.name).all()
-    return render_template('partials/_matchModal.html', players=players)
+    
+    if request.headers.get('HX-Request') == 'true':
+        return render_template('partials/_matchModal.html', players=players)
+    else:
+        return render_template('players.html', players=players)
+
+
+@app.route('/spelare/<string:player_slug>')
+def player_detail(player_slug):
+    player = Player.query.filter_by(slug=player_slug).first()
+    rating_history = PlayerRating.query.filter_by(player_id=player.id).order_by(PlayerRating.date_created.asc()).all()
+    rating_history = [{'date_created': str(rating.date_created), 'rating': rating.rating} for rating in rating_history]
+    if not player:
+        abort(404)
+    return render_template('player_detail.html', player=player, rating_history=rating_history, rating_history_json=json.dumps(rating_history))
+
+
+@app.route('/ny_spelare', methods=['GET', 'POST'])
+def add_player():
+    if request.method == 'POST':
+        name = request.form['name'].strip()
+        slug = slugify(name)
+        
+        if not name:
+            flash('Namn får inte vara tomt')
+            return redirect(url_for('add_player'))
+        
+        if len(name) > 30:
+            flash('Namn får inte vara längre än 30 tecken')
+            return redirect(url_for('add_player'))
+        
+        if Player.query.filter(func.lower(Player.name) == func.lower(name)).first():
+            flash('Namnet finns redan')
+            return redirect(url_for('add_player'))
+        
+        player = Player(name=name, slug=slug)
+        db.session.add(player)
+        db.session.commit()
+        flash(f'{player.name} har lagts till.', 'success')
+        return redirect(url_for('index'))
+    
+    elif request.headers.get('HX-Request') == 'true':
+        return render_template('partials/_addplayerModal.html')
+    
+    else:
+        return redirect(url_for('index'))
+
+
+
+@app.route('/spelare/<string:player_slug>/inaktivera', methods=['POST'])
+def deactivate_player(player_slug):
+    player = Player.query.filter_by(slug=player_slug).first()
+    if player:
+        player.is_active = False
+        db.session.commit()
+        flash(f'Spelaren {player.name} har inaktiverats.', 'success')
+        return redirect(url_for('index'))
+    else:
+        return '', 404  # Returnera en tom respons med status 404 om spelaren inte hittades
 
 
 @app.route('/result', methods=['POST'])
@@ -56,20 +117,20 @@ def save_result():
     num_games_player2 = player2.num_games()
 
     if num_games_player1 < 20:
-        K_FACTOR_PLAYER1 = 32
-    elif num_games_player1 < 50:
         K_FACTOR_PLAYER1 = 24
+    elif num_games_player1 < 50:
+        K_FACTOR_PLAYER1 = 18
     elif num_games_player1 < 100:
-        K_FACTOR_PLAYER1 = 16
+        K_FACTOR_PLAYER1 = 12
     else:
         K_FACTOR_PLAYER1 = 8
 
     if num_games_player2 < 20:
-        K_FACTOR_PLAYER2 = 32
-    elif num_games_player2 < 50:
         K_FACTOR_PLAYER2 = 24
+    elif num_games_player2 < 50:
+        K_FACTOR_PLAYER2 = 18
     elif num_games_player2 < 100:
-        K_FACTOR_PLAYER2 = 16
+        K_FACTOR_PLAYER2 = 12
     else:
         K_FACTOR_PLAYER2 = 8
 
@@ -77,7 +138,7 @@ def save_result():
     player1_expected = 1 / (1 + 10 ** ((player2.rating - player1.rating) / 400))
     player2_expected = 1 - player1_expected
 
-    # Calculate new ratings
+    # Get the winner and score difference
     if player1_score > player2_score:
         player1_result = 1
         player2_result = 0

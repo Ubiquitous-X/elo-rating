@@ -1,11 +1,11 @@
 <nav class="navbar" role="navigation" x-data="{ isOpen: false }" @click.away="isOpen = false">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="#">
+  <div class="navbar-brand ml-5">
+    <a class="navbar-item" href="{{ url_for('index') }}">
       <img src="{{ url_for('static', filename='/img/esem_logo.png') }}">
-    </a>
     <div class="navbar-item has-text-centered">
       <p class="title">Kvitten Open</p>
     </div>
+    </a>
     <a role="button" class="navbar-burger" :class="{ 'is-active': isOpen }" @click="isOpen = !isOpen">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
@@ -16,17 +16,41 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-primary">
-            <strong>Spelare</strong>
+          <a class="button is-primary" 
+            href="/registrera"
+            hx-get="/spelare"
+            hx-trigger="click"
+            hx-target="#matchModal"
+            hx-swap="innerHTML">
+            <strong>Registrera match</strong>
           </a>
           <a class="button is-link">
-            <strong>Resultat</strong>
+            <strong>Alla resultat</strong>
+          </a>
+          <a class="button is-warning" 
+            href="/ny_spelare"
+            hx-get="/ny_spelare"
+            hx-trigger="click"
+            hx-target="#playerModal"
+            hx-swap="innerHTML">
+            <strong>Ny spelare</strong>
           </a>
           <a class="button is-dark">
-            Regler
+            Regler & info
           </a>
+          {% if player %}
+          <form action="{{ url_for('deactivate_player', player_slug=player.slug) }}" 
+            method="post"
+            onsubmit="return confirm('OBS! En inaktiverad spelare kan aldrig läggas till igen!\n\nÄr du säker på att du vill inaktivera {{ player.name }}?')">
+            <button type="submit" class="button is-danger">
+              <strong>Inaktivera</strong>
+            </button>
+          </form>          
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
 </nav>
+<div id="matchModal"></div>
+<div id="playerModal"></div>

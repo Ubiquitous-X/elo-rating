@@ -1,0 +1,26 @@
+<div class="modal custom-modal is-active">
+  <div class="modal-background cancel"></div>
+  <div class="modal-content is-vcentered">
+    <div class="box content">
+      <h2 class="is-2 mb-4">Lägg till ny spelare</h2>
+      <form action="/ny_spelare" method="POST">
+        <div class="field">
+          <div class="control">
+            <input class="input" type="text" name="name" placeholder="Namn">
+          </div>
+        </div>                
+        <nav class="level is-mobile">
+          <div class="level-left"></div>
+          <div class="level-right">
+            <div class="level-item mt-4">
+              <input class="button is-link" type="submit" value="Spara">
+            </div>
+            <div class="level-item mt-4">
+              <a type="button" class="button cancel">Avbryt</a>
+            </div>
+          </div>
+        </nav>
+      </form>
+    </div>
+  </div>
+</div>

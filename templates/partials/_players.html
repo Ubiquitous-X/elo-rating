@@ -10,9 +10,9 @@
   </thead>
   <tbody>
     {% for player in players %}
-      <tr>
+      <tr data-href="{{ url_for('player_detail', player_slug=player.slug) }}">
         <td>{{ loop.index }}</td>
-        <td>{{ player.name }}</td>
+        <td>{{ player.name }}</a></td>
         <td>{{ player.wins }}</td>
         <td>{{ player.losses }}</td>
         <td>{{ player.rating|round|int }}
@@ -26,3 +26,4 @@
     {% endfor %}
   </tbody>
 </table>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>

@@ -1,24 +1,46 @@
 from datetime import datetime
+from slugify import slugify
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False, unique=True)
+    slug = db.Column(db.String(100), nullable=False, unique=True)
     wins = db.Column(db.Integer, nullable=False, default=0)
     losses = db.Column(db.Integer, nullable=False, default=0)
     rating = db.Column(db.Integer, nullable=False, default=1000)
     latest_rating_change = db.Column(db.Integer, nullable=False, default=0)
     is_active = db.Column(db.Boolean, nullable=False, default=True)
-    date_added = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
+    date_added = db.Column(db.DateTime, nullable=False, default=datetime.now())
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.generate_slug()
 
     def __repr__(self):
         return self.name
 
-    def num_games(self):
-            return Result.query.filter((Result.player1_id == self.id) | (Result.player2_id == self.id)).count()
+    def generate_slug(self):
+        self.slug = slugify(self.name)
 
+    def win_ratio(self):
+        if self.num_games() == 0:
+            return 0
+        return self.wins * 100 // self.num_games()
+
+    def rank(self):
+        players = Player.query.order_by(Player.rating.desc()).all()
+        return players.index(self) + 1
+
+    def num_games(self):
+        return Result.query.filter((Result.player1_id == self.id) | (Result.player2_id == self.id)).count()
+
+    @classmethod
+    def get_by_name(cls, name):
+        return cls.query.filter_by(name=name).first()
 
 
 class Result(db.Model):
