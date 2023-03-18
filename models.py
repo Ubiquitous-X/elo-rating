@@ -56,6 +56,16 @@ class Result(db.Model):
     player2 = db.relationship('Player', foreign_keys=[player2_id])
     winner = db.relationship('Player', foreign_keys=[winner_id])
 
+    def delete_and_update_players(self):
+        db.session.delete(self)
+        if self.winner == self.player1:
+            self.player1.wins -= 1
+            self.player2.losses -= 1
+        else:
+            self.player1.losses -= 1
+            self.player2.wins -= 1
+        db.session.commit()
+        
     def __repr__(self):
         return f'{self.player1.name} vs. {self.player2.name} ({self.player1_score} - {self.player2_score})'
 

@@ -87,6 +87,14 @@ def get_results():
 def delete_result(result_id):
     result = Result.query.get(result_id)
     if result:
+        player1 = result.player1
+        player2 = result.player2
+        if result.winner == player1:
+            player1.wins -= 1
+            player2.losses -= 1
+        elif result.winner == player2:
+            player2.wins -= 1
+            player1.losses -= 1
         db.session.delete(result)
         db.session.commit()
         flash('Matchen raderad', 'danger')
