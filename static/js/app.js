@@ -11,7 +11,7 @@ setTimeout(function() {
     el.classList.add('hide');
     el.remove();
   });
-}, 3000);
+}, 4000);
 
 
 // Lägg till en klickhändelse på varje rad i tabellen med spelare

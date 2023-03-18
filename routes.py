@@ -27,6 +27,7 @@ def player_detail(player_slug):
     player = Player.query.filter_by(slug=player_slug).first()
     rating_history = PlayerRating.query.filter_by(player_id=player.id).order_by(PlayerRating.date_created.asc()).all()
     rating_history = [{'date_created': str(rating.date_created), 'rating': rating.rating} for rating in rating_history]
+
     if not player:
         abort(404)
     return render_template('player_detail.html', player=player, rating_history=rating_history, rating_history_json=json.dumps(rating_history))
@@ -39,15 +40,15 @@ def add_player():
         slug = slugify(name)
         
         if not name:
-            flash('Namn får inte vara tomt')
+            flash('Namnet får inte vara blankt', 'danger')
             return redirect(url_for('add_player'))
         
         if len(name) > 30:
-            flash('Namn får inte vara längre än 30 tecken')
+            flash('Namn får inte vara längre än 30 tecken', 'danger')
             return redirect(url_for('add_player'))
         
         if Player.query.filter(func.lower(Player.name) == func.lower(name)).first():
-            flash('Namnet finns redan')
+            flash('Namnet finns redan', 'danger')
             return redirect(url_for('add_player'))
         
         player = Player(name=name, slug=slug)
@@ -69,10 +70,10 @@ def deactivate_player(player_slug):
     if player:
         player.is_active = False
         db.session.commit()
-        flash(f'Spelaren {player.name} har inaktiverats.', 'success')
+        flash(f'Spelaren {player.name} har inaktiverats', 'danger')
         return redirect(url_for('index'))
     else:
-        flash('Ogilitig spelare', 'success')
+        flash('Ogilitig spelare', 'danger')
         return redirect(url_for('index'))
 
 
@@ -88,7 +89,7 @@ def delete_result(result_id):
     if result:
         db.session.delete(result)
         db.session.commit()
-        flash('Resultat raderat!', 'success')
+        flash('Matchen raderad', 'danger')
     return redirect(url_for('index'))
 
 
@@ -107,7 +108,7 @@ def reset_results():
 
     db.session.commit()
 
-    flash('Alla resultat och spelares statistik har nollställts.', 'success')
+    flash('Alla resultat och spelares statistik har nollställts.', 'danger')
     return redirect(url_for('index'))
 
 
@@ -119,7 +120,7 @@ def save_result():
     player2 = Player.query.filter_by(id=request.form['player2']).first()
 
     if not player1 or not player2:
-        flash('Båda spelarna måste fyllas i')
+        flash('Båda spelarna måste fyllas i', 'danger')
         return redirect(url_for('index'))
 
     player1_score = request.form['player1_score']
@@ -136,15 +137,15 @@ def save_result():
         player2_score = int(player2_score)
 
     if player1_score is None or player2_score is None:
-        flash('Poängen för båda spelarna måste fyllas i')
+        flash('Poängen för båda spelarna måste fyllas i', 'danger')
         return redirect(url_for('index'))
 
     if player1_score == player2_score:
-        flash('Matchen kan inte sluta oavgjort')
+        flash('Matchen kan inte sluta oavgjort', 'danger')
         return redirect(url_for('index'))
 
     if player1 == player2:
-        flash('En spelare kan inte möta sig själv')
+        flash('En spelare kan inte möta sig själv', 'danger')
         return redirect(url_for('index'))
 
     # Get number of games for each player for K_FACTOR
@@ -227,4 +228,5 @@ def save_result():
     db.session.add(new_result)
     db.session.commit()
 
+    flash('Matchen registrerad', 'success')
     return redirect(url_for('index'))
