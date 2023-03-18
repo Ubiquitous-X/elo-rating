@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+{% if results %}
+<div class="columns">
+  <div class="column box is-12">
+    <table class="table is-fullwidth">
+      <thead>
+        <tr>
+          <th>Spelad</th>
+          <th>Spelare 1</th>
+          <th>Spelare 2</th>
+          <th>Poäng</th>
+          <th>Vinnare</th>
+          <th>Radera</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for result in results %}
+        <tr>
+          <td>{{ result.date_played.strftime('%Y-%m-%d kl %H:%M') }}</td>
+          <td style="color: {% if result.winner == result.player1 %}green{% else %}red{% endif %};">{{ result.player1 }}</td>
+          <td style="color: {% if result.winner == result.player2 %}green{% else %}red{% endif %};">{{ result.player2 }}</td>
+          <td style="color: {% if result.winner == result.player1 %}green{% else %} {% if result.winner == result.player2 %}red{% endif %} {% endif %};">
+            {{ result.player1_score }} - <span style="color: {% if result.winner == result.player2 %}green{% else %}red{% endif %};">{{ result.player2_score }}</span></td>
+          <td style="color: green">{{ result.winner }}</td>
+          <td>
+            <form action="{{ url_for('delete_result', result_id=result.id) }}" method="POST" 
+              onsubmit="return confirm('VARNING!\n\nÄven om ett resultat raderas så backas inte ratingen från den matchen. Vill du radera resultatet?')">
+              <input type="hidden" name="_method" value="DELETE">
+              <button type="submit" class="button is-white is-small"><i class="fas fa-xmark"></i></button>
+            </form>
+          </td>
+        </tr>        
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>  
+</div>
+
+{% else %}
+<p class="title is-4">Inga matcher är spelade än</p>
+{% endif %}
+{% endblock %}

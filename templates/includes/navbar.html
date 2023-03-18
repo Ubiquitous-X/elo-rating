@@ -24,7 +24,8 @@
             hx-swap="innerHTML">
             <strong>Registrera match</strong>
           </a>
-          <a class="button is-link">
+          <a class="button is-link"
+            href="{{ url_for('get_results') }}" >
             <strong>Alla resultat</strong>
           </a>
           <a class="button is-warning" 
@@ -44,6 +45,15 @@
             onsubmit="return confirm('OBS! En inaktiverad spelare kan aldrig läggas till igen!\n\nÄr du säker på att du vill inaktivera {{ player.name }}?')">
             <button type="submit" class="button is-danger">
               <strong>Inaktivera</strong>
+            </button>
+          </form>          
+          {% endif %}
+          {% if request.path == url_for('get_results') %}
+          <form action="{{ url_for('reset_results') }}" 
+            method="post"
+            onsubmit="return confirm('VARNING!\n\nDu är på väg att nollställa databasen. Alla resultat raderas och alla spelare får sin rating nollställd.\n\nÄr du verkligen säker?')">
+            <button type="submit" class="button is-danger">
+              <strong>Nollställ</strong>
             </button>
           </form>          
           {% endif %}

@@ -63,7 +63,6 @@ def add_player():
         return redirect(url_for('index'))
 
 
-
 @app.route('/spelare/<string:player_slug>/inaktivera', methods=['POST'])
 def deactivate_player(player_slug):
     player = Player.query.filter_by(slug=player_slug).first()
@@ -73,10 +72,46 @@ def deactivate_player(player_slug):
         flash(f'Spelaren {player.name} har inaktiverats.', 'success')
         return redirect(url_for('index'))
     else:
-        return '', 404  # Returnera en tom respons med status 404 om spelaren inte hittades
+        flash('Ogilitig spelare', 'success')
+        return redirect(url_for('index'))
 
 
-@app.route('/result', methods=['POST'])
+@app.route('/resultat', methods=['GET'])
+def get_results():
+    results = Result.query.order_by(Result.date_played.desc()).all()
+    return render_template('results.html', results=results)
+
+
+@app.route('/delete_result/<int:result_id>', methods=['POST'])
+def delete_result(result_id):
+    result = Result.query.get(result_id)
+    if result:
+        db.session.delete(result)
+        db.session.commit()
+        flash('Resultat raderat!', 'success')
+    return redirect(url_for('index'))
+
+
+@app.route('/reset', methods=['POST'])
+def reset_results():
+    # Nollställ alla resultat
+    Result.query.delete()
+
+    # Nollställ wins, losses, rating och latest_rating_change för alla spelare
+    db.session.query(Player).update({
+        Player.wins: 0,
+        Player.losses: 0,
+        Player.rating: 1000,
+        Player.latest_rating_change: 0
+    })
+
+    db.session.commit()
+
+    flash('Alla resultat och spelares statistik har nollställts.', 'success')
+    return redirect(url_for('index'))
+
+
+@app.route('/add_result', methods=['POST'])
 def save_result():
 
     # Validations
