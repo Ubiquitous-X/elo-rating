@@ -23,11 +23,11 @@
             hx-trigger="click"
             hx-target="#matchModal"
             hx-swap="innerHTML">
-            <strong>Registrera match</strong>
+            <span class="icon"><i class="fas fa-table-tennis-paddle-ball fa-sm"></i></span><strong>Registrera match</strong>
           </a>          
           <a class="button is-link"
             href="{{ url_for('get_results') }}" >
-            <strong>Alla resultat</strong>
+            <span class="icon"><i class="fas fa-bars fa-sm"></i></span><strong>Alla resultat</strong>
           </a>          
           <a class="button is-warning" 
             href="/ny_spelare"
@@ -35,10 +35,11 @@
             hx-trigger="click"
             hx-target="#playerModal"
             hx-swap="innerHTML">
-            <strong>Ny spelare</strong>
+            <span class="icon"><i class="fas fa-user-plus fa-sm"></i></span><strong>Ny spelare</strong>
           </a>
-          <a class="button is-dark">
-            Regler & info
+          <a class="button is-dark"
+            href="{{ url_for('index') }}" >
+            <span class="icon"><i class="fas fa-info fa-sm"></i></span><strong>Regler & info</strong>
           </a>
           {% endif %}
           {% if player %}
@@ -50,20 +51,20 @@
             method="post"
             onsubmit="return confirm('OBS! En inaktiverad spelare kan aldrig läggas till igen!\n\nÄr du säker på att du vill inaktivera {{ player.name }}?')">
             <button type="submit" class="button is-danger">
-              <strong>Inaktivera</strong>
+              <span class="icon"><i class="fas fa-user-slash fa-sm"></i></span><strong>Inaktivera</strong>
             </button>
           </form>          
           {% endif %}
           {% if request.path == url_for('get_results') %}
           <a class="button is-link"
             href="{{ url_for('index') }}" >
-          <strong>Tillbaka</strong>
+            <span class="icon"><i class="fas fa-arrow-left fa-sm"></i></span><strong>Tillbaka</strong>
           </a> 
           <form action="{{ url_for('reset_results') }}" 
             method="post"
             onsubmit="return confirm('VARNING!\n\nDu är på väg att nollställa databasen. Alla resultat raderas och alla spelare får sin rating nollställd.\n\nÄr du verkligen säker?')">
             <button type="submit" class="button is-danger">
-              <strong>Nollställ</strong>
+              <span class="icon"><i class="fas fa-ban fa-sm"></i></span><strong>Nollställ</strong>
             </button>
           </form>          
           {% endif %}
