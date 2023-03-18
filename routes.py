@@ -95,10 +95,9 @@ def delete_result(result_id):
 
 @app.route('/reset', methods=['POST'])
 def reset_results():
-    # Nollställ alla resultat
+    PlayerRating.query.delete()
     Result.query.delete()
 
-    # Nollställ wins, losses, rating och latest_rating_change för alla spelare
     db.session.query(Player).update({
         Player.wins: 0,
         Player.losses: 0,
