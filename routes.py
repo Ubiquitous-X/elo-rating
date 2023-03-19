@@ -2,14 +2,21 @@ from flask import Flask, render_template, request, redirect, url_for, flash, abo
 from app import app, db
 from models import Player, Result, PlayerRating
 from slugify import slugify
-from sqlalchemy import func
+from sqlalchemy import func, or_
 import json
 
 @app.route('/')
 def index():
     players = Player.query.filter_by(is_active=True).order_by(Player.rating.desc(), Player.name.asc()).all()
     results = Result.query.order_by(Result.date_played.desc()).limit(5).all()
-    return render_template('index.html', players=players, results=results)
+    latest_results = Result.query.order_by(Result.date_played.desc()).limit(1).all()
+
+    latest_players = []
+    for result in latest_results:
+        latest_players.extend([result.player1, result.player2])
+
+    print(latest_players)
+    return render_template('index.html', players=players, results=results, latest_players=latest_players)
 
 
 @app.route('/info')

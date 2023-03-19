@@ -15,15 +15,21 @@
         <td>{{ player.name }}</a></td>
         <td class="has-text-centered">{{ player.wins }}</td>
         <td class="has-text-centered">{{ player.losses }}</td>
-        <td>{{ player.rating|round|int }}
-          {% if player.latest_rating_change < 0 %}
-          <span class="has-text-danger is-size-7">{{ player.latest_rating_change|round|int }}</span>
-          {% elif player.latest_rating_change > 0 %}
-          <span class="has-text-success is-size-7">+{{ player.latest_rating_change|round|int }}</span>
+        <td>
+          {% if player in latest_players %}
+            {{ player.rating|round|int }}
+            {% if player.latest_rating_change < 0 %}
+            <span class="has-text-danger is-size-7">{{ player.latest_rating_change|round|int }}</span>
+            {% elif player.latest_rating_change > 0 %}
+            <span class="has-text-success is-size-7">+{{ player.latest_rating_change|round|int }}</span>
+            {% endif %}
+          {% else %}
+            {{ player.rating|round|int }}
           {% endif %}
         </td>
       </tr>
     {% endfor %}
   </tbody>
 </table>
+
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
