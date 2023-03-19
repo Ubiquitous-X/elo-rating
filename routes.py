@@ -48,8 +48,8 @@ def add_player():
             flash('Namnet får inte vara blankt', 'danger')
             return redirect(url_for('add_player'))
         
-        if len(name) > 30:
-            flash('Namn får inte vara längre än 30 tecken', 'danger')
+        if len(name) > 20:
+            flash('Namn får inte vara längre än 20 tecken', 'danger')
             return redirect(url_for('add_player'))
         
         if Player.query.filter(func.lower(Player.name) == func.lower(name)).first():
