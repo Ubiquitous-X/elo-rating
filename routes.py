@@ -7,7 +7,7 @@ import json
 
 @app.route('/')
 def index():
-    players = Player.query.filter_by(is_active=True).order_by(Player.rating.desc()).all()
+    players = Player.query.filter_by(is_active=True).order_by(Player.rating.desc(), Player.name.asc()).all()
     results = Result.query.order_by(Result.date_played.desc()).limit(5).all()
     return render_template('index.html', players=players, results=results)
 
