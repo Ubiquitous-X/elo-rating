@@ -16,31 +16,72 @@
         <p>6. Man får inte hitta på regler under matchens gång, bara för att <em>"vi alltid körde så i högstadiet"</em></p>
       </div>
     </article>
-    <article class="message is-dark">
-      <div class="message-header">
-        <p>Elo-rating</p><span class="icon"><i class="fas fa-scale-balanced"></i></span>
-      </div>
-      <div class="message-body">
-        <p>Elo-rating är ett system för att rangordna spelare eller lag baserat på deras prestationer i matcher. Det används vanligtvis i spel som schack, tennis och esport. Elo-ratingen är en siffra som representerar spelarens skicklighet och beräknas utifrån resultaten i tidigare matcher och motståndarens Elo-rating.</p><br>
-        <p><strong>För att beräkna Elo-ratingen i denna app används följande faktorer:</strong></p><br>
-        <p><strong>1. K-faktor: </strong>En parameter som avgör hur mycket Elo-ratingen ändras efter en match. Ju högre K-faktorn är, desto större blir ratingförändringen. I koden används olika K-faktorer beroende på antalet matcher som spelaren har spelat.</p><br>
-        <p><strong>2. Förväntat resultat: </strong>Beräknas utifrån skillnaden mellan spelarnas Elo-ratingar. Ju högre rating skillnaden är, desto större är skillnaden i förväntade poäng. En spelare som förväntas förlora kommer att få fler Elo-poäng om hen vinner än en spelare som förväntas vinna.</p><br>
-        <p><strong>3. Poängdiff: </strong>Skillnaden i poäng mellan vinnaren och förloraren i matchen.</p><br>
-        <p><strong>4. Score factor: </strong>En parameter som avgör hur mycket Elo-ratingen ska ändras beroende på poängdiffen.</p><br>
-        <p>Efter varje match uppdateras spelarnas Elo-rating baserat på ovanstående faktorer. Om en spelare vinner mot en högt rankad motståndare får hen fler Elo-poäng än om hen vinner mot en lågt rankad motståndare. På samma sätt får en spelare som förlorar mot en lågt rankad motståndare fler Elo-poäng än om hen förlorar mot en högt rankad motståndare. Ju fler matcher en spelare spelar, desto svårare blir det att höja ratingen, eftersom ratingen alltmer speglar spelarens verkliga förmåga.</p><br>
-        <p><em>Beräkningen av ny rating efter varje match sker enligt följande:</em></p>
-        <pre><code>## Beräkning av förväntat resultat:<br>player1_expected = 1 / (1 + 10 ** ((player2.rating - player1.rating) / 400))<br>player2_expected = 1 - player1_expected
-        </code></pre>
-      </div>
-    </article>
     <article class="message is-warning">
       <div class="message-header">
         <p>Databasen</p><span class="icon"><i class="fas fa-triangle-exclamation"></i></span>
       </div>
       <div class="message-body">
-        <p>Det är möjligt att radera en match ur databasen, innifrån sidan "Alla resultat". Då tas den bort från resultatlistorna och de båda deltagarnas statistik. Men, det skall observeras att rating-poängen som genererades av den matchen <strong>ej backas</strong> för de deltagande spelarna.</p><br>
+        <p>Det är möjligt att radera en match ur databasen från sidan "Alla resultat". Då tas den bort från resultatlistorna och de båda deltagarnas statistik. Men, det skall observeras att rating-poängen som genererades av den matchen <strong>ej backas</strong> för de deltagande spelarna.</p><br>
         <p>Det går från spelarens detaljvy sätta denne som inaktiv. En inaktiv spelare syns inte i rankingen och kan inte registreras för nya resultat. Det är inte heller möjligt att registrera en ny spelare med samma namn som den inaktiverade.</p><br>
         <p>Innifrån sidan "Alla resultat" finns det även en knapp för att nollställa databasen. Den bör användas sparsamt, då alla resultat, all historik och all rating för alla spelare nollställs. Det enda som sparas är själva spelaren. Dock så raderas spelare som är satta som inaktiva.</p>
+      </div>
+    </article>
+    <article class="message is-dark">
+      <div class="message-header">
+        <p>Elo-rating</p><span class="icon"><i class="fas fa-scale-balanced"></i></span>
+      </div>
+      <div class="message-body">
+        <p>Elo-rating är en algoritm för att beräkna spelares relativa skicklighet i spel, baserat på deras resultat mot andra spelare. Det används oftast i schack, men också i andra spel som till exempel tennis och brädspel. Elo-ratingen är en siffra som representerar spelarens skicklighet och beräknas utifrån resultaten i tidigare matcher och motståndarens Elo-rating.</p><br>
+        <p>Beräkningarna som görs i koden syftar till att uppdatera spelarnas Elo-rating efter varje match, beroende på deras förväntade resultat och det faktiska resultatet av matchen. Förväntade resultat beräknas baserat på spelarnas Elo-rating före matchen, och sedan justeras ratingen baserat på det faktiska resultatet.</p><br>
+        <p>Flera parametrar används i beräkningen, bland annat antalet spel som spelarna har spelat tidigare, så kallat "K-factor". Detta påverkar hur mycket en spelares rating kommer att förändras efter varje match, med högre K-factor för mindre erfarna spelare. Andra faktorer inkluderar skillnaden i rating mellan spelarna, det faktiska resultatet och hur många ratingpoäng som den lägre rankade spelaren bör vinna för att inte förlora för många poäng.</p><br>
+        <p>I koden beräknas förväntade poäng för varje spelare baserat på deras Elo-rating före matchen, och sedan jämförs detta med det faktiska resultatet. Baserat på detta beräknas skillnaden i rating som varje spelare ska tilldelas efter matchen. Slutligen uppdateras spelarnas Elo-rating i enlighet med dessa skillnader.</p><br>
+        <p>För att se till att ratingen inte sjunker för mycket för en förlorande spelare så finns också en minsta möjliga ratingförändring som kan ske. Detta görs genom att lägga till en konstant, 24, till den minsta möjliga ratingförändringen. Det finns också en faktor som tar hänsyn till hur stor skillnaden i poäng var mellan spelarna för att justera ratingförändringen.</p><br>
+        <p>Efter varje match uppdateras spelarnas Elo-rating baserat på ovanstående faktorer. Om en spelare vinner mot en högt rankad motståndare får hen fler Elo-poäng än om hen vinner mot en lågt rankad motståndare. På samma sätt får en spelare som förlorar mot en lågt rankad motståndare fler Elo-poäng än om hen förlorar mot en högt rankad motståndare. Ju fler matcher en spelare spelar, desto svårare blir det att höja ratingen, eftersom ratingen alltmer speglar spelarens verkliga förmåga.</p><br>
+        <pre><code>
+<em># Bestäm K_FACTOR utefter antal spelade matcher</em>  
+if num_games_player1 < 20:
+  K_FACTOR_PLAYER1 = 24
+elif num_games_player1 < 50:
+  K_FACTOR_PLAYER1 = 18
+elif num_games_player1 < 100:
+  K_FACTOR_PLAYER1 = 12
+else:
+  K_FACTOR_PLAYER1 = 8
+
+if num_games_player2 < 20:
+  K_FACTOR_PLAYER2 = 24
+elif num_games_player2 < 50:
+  K_FACTOR_PLAYER2 = 18
+elif num_games_player2 < 100:
+  K_FACTOR_PLAYER2 = 12
+else:
+  K_FACTOR_PLAYER2 = 8
+
+<em># Beräkning av förväntat resultat:</em>
+player1_expected = 1 / (1 + 10 ** ((player2.rating - player1.rating) / 400))
+player2_expected = 1 - player1_expected
+
+<em># Sätt poängskillnaden som värde för score_diff:</em>
+if player1_score > player2_score:
+    score_diff = player1_score - player2_score
+elif player2_score > player1_score:
+    score_diff = player2_score - player1_score
+
+<em># Hämta ratingskillnaden och använd som värde för beräkning av expected_score:</em>
+rating_diff = player2.rating - player1.rating
+expected_score = 1 / (1 + 10 ** (rating_diff / 400))
+
+<em># Beräkna min_rating_change utefter expected_score ovan</em>
+min_rating_change = 24 * (1 - expected_score)
+
+<em># Faktor för att justera rating beroende på antal poäng i matchen</em>
+score_factor = max(1, (score_diff / 2 + 3) / 4)
+
+<em># Beräkna ratingförändringen för båda spelarna</em>
+player1_rating_change = round(K_FACTOR_PLAYER1 * (player1_result - player1_expected - min_rating_change / 800) * score_factor)
+player2_rating_change = round(K_FACTOR_PLAYER2 * (player2_result - player2_expected - min_rating_change / 800) * score_factor)
+
+        </code></pre>        
       </div>
     </article>
   </div>  
