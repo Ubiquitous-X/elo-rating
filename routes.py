@@ -128,7 +128,7 @@ def reset_results():
 @app.route('/add_result', methods=['POST'])
 def save_result():
 
-    # Validations
+    # Valideringar
     player1 = Player.query.filter_by(id=request.form['player1']).first()
     player2 = Player.query.filter_by(id=request.form['player2']).first()
 
@@ -161,7 +161,7 @@ def save_result():
         flash('En spelare kan inte möta sig själv', 'danger')
         return redirect(url_for('index'))
 
-    # Get number of games for each player for K_FACTOR
+    # Hämta antalet spelade matcher för båda spelarna för K_FACTOR
     num_games_player1 = player1.num_games()
     num_games_player2 = player2.num_games()
 
@@ -183,11 +183,11 @@ def save_result():
     else:
         K_FACTOR_PLAYER2 = 8
 
-    # Calculate expected scores
+    # Beräkna förväntat resultat för spelarna
     player1_expected = 1 / (1 + 10 ** ((player2.rating - player1.rating) / 400))
     player2_expected = 1 - player1_expected
 
-    # Get the winner and score difference
+    # Bestäm vinnaren och beräkna poängskillnaden
     if player1_score > player2_score:
         player1_result = 1
         player2_result = 0
@@ -197,29 +197,30 @@ def save_result():
         player2_result = 1
         score_diff = player2_score - player1_score
 
-    # Calculate rating changes
+    # Hämta ratingskillnaden och använd som värde för beräkning av expected_score
     rating_diff = player2.rating - player1.rating
     expected_score = 1 / (1 + 10 ** (rating_diff / 400))
 
-    # Calculate the minimum amount of rating points the lower rated player should gain
-    min_rating_change = 16 * (1 - expected_score)
+    # Beräkna min_rating_change utefter expected_score ovan
+    min_rating_change = 24 * (1 - expected_score)
 
-    # The factor for adjusting rating depending on score
+    # Faktor för att justera rating beroende på antal poäng i matchen
     score_factor = max(1, (score_diff / 2 + 3) / 4)
 
-    # Calculate rating changes
-    player1_rating_change = round(K_FACTOR_PLAYER1 * (player1_result - expected_score - min_rating_change / 800) * score_factor)
-    player2_rating_change = round(K_FACTOR_PLAYER2 * (player2_result - (1 - expected_score) - min_rating_change / 800) * score_factor)
+    # Beräkna ratingförändringen för båda spelarna
+    player1_rating_change = round(K_FACTOR_PLAYER1 * (player1_result - player1_expected - min_rating_change / 800) * score_factor)
+    player2_rating_change = round(K_FACTOR_PLAYER2 * (player2_result - player2_expected - min_rating_change / 800) * score_factor)
 
     player1.rating += player1_rating_change
     player2.rating += player2_rating_change
 
-    # Set minimum rating to 100
+    # Sätt minimumrating till 100 för att undvika att en spelare går ner till minus
     if player1.rating < 100:
         player1.rating = 100
     if player2.rating < 100:
         player2.rating = 100
 
+    # Uppdatera parametrar att skriva till databasen
     player1.latest_rating_change = player1_rating_change
     player2.latest_rating_change = player2_rating_change
 
@@ -234,7 +235,7 @@ def save_result():
 
     new_result = Result(player1=player1, player2=player2, player1_score=player1_score, player2_score=player2_score, winner=winner)
 
-    # Save the rating for history
+    # Spara ratinghistoriken för att användas i diagram
     db.session.add(PlayerRating(player=player1, rating=player1.rating))
     db.session.add(PlayerRating(player=player2, rating=player2.rating))
 
