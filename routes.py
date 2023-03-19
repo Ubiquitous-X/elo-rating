@@ -12,6 +12,11 @@ def index():
     return render_template('index.html', players=players, results=results)
 
 
+@app.route('/info')
+def info():
+    return render_template('info.html')
+
+
 @app.route('/spelare', methods=['GET'])
 def get_players():
     players = Player.query.filter_by(is_active=True).order_by(Player.name).all()
@@ -113,9 +118,10 @@ def reset_results():
         Player.latest_rating_change: 0
     })
 
+    db.session.query(Player).filter(Player.is_active==False).delete()
+    
     db.session.commit()
-
-    flash('Alla resultat och spelares statistik har nollställts.', 'danger')
+    flash('Alla resultat och alla spelares statistik har nollställts', 'danger')
     return redirect(url_for('index'))
 
 
