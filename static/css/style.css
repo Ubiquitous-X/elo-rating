@@ -20,3 +20,15 @@
   .fa-xmark {
     color: red;
   }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f2f2f2;
+    color: #888;
+    height: 30px;
+    line-height: 30px;
+    padding: 0;
+    margin: 0;
+  }
