@@ -1,10 +1,17 @@
-# Kvitten Cup
-Elo rating är en metod för att beräkna den relativa styrkan hos spelare inom spel eller sport, särskilt i schack men också i andra spel som tennis, bridge och go. Elo-rating systemet är uppbyggt på ett antal principer för att utvärdera en spelares prestation, och beräkningar av spelarens nya rating efter varje spel.
+# Kvitten Open
+En app skriven med Flask som ramverk och Bulma CSS för presentation. Denna app är framtagen för att på ett tydligt sätt en gång för alla avgöra den stora frågan om vem som faktiskt är den bästa pingisspelaren under de blodstänkta matcherna som så ivrigt avgörs på lunchrasterna.
 
-En spelares Elo-rating beräknas utifrån antalet matcher som spelaren har spelat och antalet matcher som spelaren har vunnit eller förlorat. Efter varje spel justeras spelarnas Elo-rating i förhållande till hur de presterade i spelet och styrkan hos deras motståndare. Ju högre ratingen är, desto starkare är spelaren.
+Alla filer ligger lokalt, så ingen internetanslutning krävs, då det kan vara något problematiskt att få in en RaspberryPi på företagets nätverk.
 
-Den här koden implementerar Elo-rating för att beräkna ratingen för två spelare baserat på resultatet av en match. Koden beräknar först antalet spel som har spelats för de två spelarna. Baserat på detta bestämmer koden vilken faktor (K_FACTOR) som ska användas i beräkningen av ratingen efter matchen.
+### Elo rating
+Elo-rating är en algoritm för att beräkna spelares relativa skicklighet i spel, baserat på deras resultat mot andra spelare. Det används oftast i schack, men också i andra spel som till exempel tennis och brädspel.
 
-Efter det hämtar koden de två spelarnas aktuella Elo-rating och matchresultaten från formuläret som skickades in. Koden beräknar sedan vad spelarnas förväntade poäng skulle ha varit baserat på deras rating och det så kallade "S" -värdet, som är antingen 1 eller 0 beroende på om en spelare vann eller förlorade.
+Beräkningarna som görs i koden syftar till att uppdatera spelarnas Elo-rating efter varje match, beroende på deras förväntade resultat och det faktiska resultatet av matchen. Förväntade resultat beräknas baserat på spelarnas Elo-rating före matchen, och sedan justeras ratingen baserat på det faktiska resultatet.
 
-Därefter används spelarnas faktiska poäng (vinst eller förlust) och den förväntade poängen för att beräkna hur mycket en spelares rating borde ändras efter matchen. Koden beräknar sedan det minsta antal ratingpoäng som den lägre rankade spelaren borde få, beroende på deras förväntade poäng. Slutligen beräknar koden den faktiska förändringen i ratingpoäng och lägger till den nya ratingpoängen för varje spelare.
+Flera parametrar används i beräkningen, bland annat antalet spel som spelarna har spelat tidigare, så kallat "K-factor". Detta påverkar hur mycket en spelares rating kommer att förändras efter varje match, med högre K-factor för mindre erfarna spelare. Andra faktorer inkluderar skillnaden i rating mellan spelarna, det faktiska resultatet och hur många ratingpoäng som den lägre rankade spelaren bör vinna för att inte förlora för många poäng.
+
+I koden beräknas förväntade poäng för varje spelare baserat på deras Elo-rating före matchen, och sedan jämförs detta med det faktiska resultatet. Baserat på detta beräknas skillnaden i rating som varje spelare ska tilldelas efter matchen. Slutligen uppdateras spelarnas Elo-rating i enlighet med dessa skillnader.
+
+För att se till att ratingen inte sjunker för mycket för en förlorande spelare så finns också en minsta möjliga ratingförändring som kan ske. Detta görs genom att lägga till en konstant, 24, till den minsta möjliga ratingförändringen. Det finns också en faktor som tar hänsyn till hur stor skillnaden i poäng var mellan spelarna för att justera ratingförändringen.
+
+Så sammanfattningsvis, koden använder Elo-rating algoritmen för att uppdatera spelarnas skicklighet efter varje match, baserat på deras förväntade resultat och det faktiska resultatet av matchen. Detta görs genom att beräkna skillnaden i förväntade poäng, den minsta möjliga ratingförändringen och en faktor som justerar ratingförändringen baserat på poängskillnad.
