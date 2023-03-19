@@ -3,8 +3,8 @@
     <tr>
       <th>Rank</th>
       <th>Namn</th>
-      <th>Vinster</th>
-      <th>Förluster</th>
+      <th class="has-text-centered">Vinster</th>
+      <th class="has-text-centered">Förluster</th>
       <th>Rating</th>
     </tr>
   </thead>
@@ -13,8 +13,8 @@
       <tr data-href="{{ url_for('player_detail', player_slug=player.slug) }}">
         <td>{{ loop.index }}</td>
         <td>{{ player.name }}</a></td>
-        <td>{{ player.wins }}</td>
-        <td>{{ player.losses }}</td>
+        <td class="has-text-centered">{{ player.wins }}</td>
+        <td class="has-text-centered">{{ player.losses }}</td>
         <td>{{ player.rating|round|int }}
           {% if player.latest_rating_change < 0 %}
           <span class="has-text-danger is-size-7">{{ player.latest_rating_change|round|int }}</span>
