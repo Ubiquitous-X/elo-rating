@@ -16,16 +16,6 @@
         <p>6. Man får inte hitta på regler under matchens gång, bara för att <em>"vi alltid körde så i högstadiet"</em></p>
       </div>
     </article>
-    <article class="message is-warning">
-      <div class="message-header">
-        <p>Databasen</p><span class="icon"><i class="fas fa-triangle-exclamation"></i></span>
-      </div>
-      <div class="message-body">
-        <p>Det är möjligt att radera en match ur databasen från sidan "Alla resultat". Då tas den bort från resultatlistorna och de båda deltagarnas statistik. Men, det skall observeras att rating-poängen som genererades av den matchen <strong>ej backas</strong> för de deltagande spelarna.</p><br>
-        <p>Det går från spelarens detaljvy sätta denne som inaktiv. En inaktiv spelare syns inte i rankingen och kan inte registreras för nya resultat. Däremot finns historiken för resultat kvar. Det är inte heller möjligt att registrera en ny spelare med samma namn som den inaktiverade.</p><br>
-        <p>Innifrån sidan "Alla resultat" finns det även en knapp för att nollställa databasen. Den bör användas sparsamt, då alla resultat, all historik och all rating för alla spelare nollställs. Det enda som sparas är själva spelaren. Dock så raderas spelare som är satta som inaktiva.</p>
-      </div>
-    </article>
     <article class="message is-dark">
       <div class="message-header">
         <p>Elo-rating</p><span class="icon"><i class="fas fa-scale-balanced"></i></span>
@@ -79,8 +69,17 @@ score_factor = max(1, (score_diff / 2 + 3) / 4)
 <em># Beräkna ratingförändringen för båda spelarna</em>
 player1_rating_change = round(K_FACTOR_PLAYER1 * (player1_result - player1_expected - min_rating_change / 800) * score_factor)
 player2_rating_change = round(K_FACTOR_PLAYER2 * (player2_result - player2_expected - min_rating_change / 800) * score_factor)
-
         </code></pre>        
+      </div>
+    </article>
+    <article class="message is-warning">
+      <div class="message-header">
+        <p>Databasen</p><span class="icon"><i class="fas fa-triangle-exclamation"></i></span>
+      </div>
+      <div class="message-body">
+        <p>Det är möjligt att radera en match ur databasen från sidan "Alla resultat". Då tas den bort från resultatlistorna och de båda deltagarnas statistik. Men, det skall observeras att rating-poängen som genererades av den matchen <strong>ej backas</strong> för de deltagande spelarna.</p><br>
+        <p>Det går från spelarens detaljvy sätta denne som inaktiv. En inaktiv spelare syns inte i rankingen och kan inte registreras för nya resultat. Däremot finns historiken för resultat kvar, vilken skulle försvinna om spelaren raderades. Det är inte möjligt att registrera en ny spelare med samma namn som den inaktiverade.</p><br>
+        <p>Innifrån sidan "Alla resultat" finns det även en knapp för att nollställa databasen. Den bör användas sparsamt, då alla resultat, all historik och all rating för alla spelare nollställs. Det enda som sparas är själva spelaren. Dock så raderas spelare som är satta som inaktiva.</p>
       </div>
     </article>
   </div>  
