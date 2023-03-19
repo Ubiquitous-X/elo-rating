@@ -24,11 +24,11 @@
             hx-target="#matchModal"
             hx-swap="innerHTML">
             <span class="icon"><i class="fas fa-table-tennis-paddle-ball fa-sm"></i></span><strong>Registrera match</strong>
-          </a>          
+          </a>
           <a class="button is-link"
             href="{{ url_for('get_results') }}" >
             <span class="icon"><i class="fas fa-bars fa-sm"></i></span><strong>Alla resultat</strong>
-          </a>          
+          </a>
           <a class="button is-warning" 
             href="/ny_spelare"
             hx-get="/ny_spelare"
@@ -38,7 +38,7 @@
             <span class="icon"><i class="fas fa-user-plus fa-sm"></i></span><strong>Ny spelare</strong>
           </a>
           <a class="button is-dark"
-            href="{{ url_for('index') }}" >
+            href="{{ url_for('info') }}" >
             <span class="icon"><i class="fas fa-info fa-sm"></i></span><strong>Regler & info</strong>
           </a>
           {% endif %}
@@ -46,18 +46,18 @@
           <a class="button is-link"
             href="{{ url_for('index') }}" >
           <strong>Tillbaka</strong>
-          </a> 
+          </a>
           <form action="{{ url_for('deactivate_player', player_slug=player.slug) }}" 
             method="post"
             onsubmit="return confirm('OBS! En inaktiverad spelare kan aldrig läggas till igen!\n\nÄr du säker på att du vill inaktivera {{ player.name }}?')">
             <button type="submit" class="button is-danger">
               <span class="icon"><i class="fas fa-user-slash fa-sm"></i></span><strong>Inaktivera</strong>
             </button>
-          </form>          
+          </form>
           {% endif %}
           {% if request.path == url_for('get_results') %}
           <a class="button is-link"
-            href="{{ url_for('index') }}" >
+            href="{{ url_for('index') }}">
             <span class="icon"><i class="fas fa-arrow-left fa-sm"></i></span><strong>Tillbaka</strong>
           </a> 
           <form action="{{ url_for('reset_results') }}" 
@@ -66,7 +66,13 @@
             <button type="submit" class="button is-danger">
               <span class="icon"><i class="fas fa-ban fa-sm"></i></span><strong>Nollställ</strong>
             </button>
-          </form>          
+          </form>
+          {% endif %}
+          {% if request.path == url_for('info') %}
+          <a class="button is-link"
+            href="{{ url_for('index') }}">
+            <span class="icon"><i class="fas fa-arrow-left fa-sm"></i></span><strong>Tillbaka</strong>
+          </a>
           {% endif %}
         </div>
       </div>

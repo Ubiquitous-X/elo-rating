@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="columns">
+  <div class="column is-12">
+    <article class="message is-info">
+      <div class="message-header">
+        <p>Regler</p><span class="icon"><i class="fas fa-info"></i></span>
+      </div>
+      <div class="message-body">
+        <p class="title is-5 has-text-info">Grunden är internationella regler enligt ITTF <em>International Table Tennis Federation</em> med några få undantag:</p>
+        <p>1. Varje match består av ett (1) set där den som först når 11 poäng vinner. Vinnaren måste dock vinna med två poäng.</p>
+        <p>2. Matchen startar när båda är med på det. Det duger inte att slå in en boll och säga <em>"Vi körde nu va? Ett-noll till mig lol"</em></p>
+        <p>3. Den som känner för det servar, men det är hyggligt att låta den andre serva också. Det skall observeras att den som har matchboll <strong><em>inte</em></strong> får serva, för att ge den andre lite hopp.</p>
+        <p>4. En boll som går i taket eller väggen och in räknas. Dock bör man inte spela på det med flit, för att undvika att framstå som en retard.</p>
+        <p>5. Det är ok att smasha, men med tanke på utrymmesbrist så är det större ära att vinna på teknik och bort-fintar.</p>
+        <p>6. Man får inte hitta på regler under matchens gång, bara för att <em>"vi alltid körde så i högstadiet"</em></p>
+      </div>
+    </article>
+    <article class="message is-warning">
+      <div class="message-header">
+        <p>Varning</p><span class="icon"><i class="fas fa-triangle-exclamation"></i></span>
+      </div>
+      <div class="message-body">
+        <p>Det är möjligt att radera en match ur databasen, innifrån sidan "Alla resultat". Då tas den bort från resultatlistorna och de båda deltagarnas statistik. Men, det skall observeras att rating-poängen som genererades av den matchen <strong>ej backas</strong> för de deltagande spelarna.</p><br>
+        <p>Det går från spelarens detaljvy sätta denne som inaktiv. En inaktiv spelare syns inte i rankingen och kan inte registreras för nya resultat. Det är inte heller möjligt att registrera en ny spelare med samma namn som den inaktiverade.</p><br>
+        <p>Innifrån sidan "Alla resultat" finns det även en knapp för att nollställa databasen. Den bör användas sparsamt, då alla resultat, all historik och all rating för alla spelare nollställs. Det enda som sparas är själva spelaren. Dock så raderas spelare som är satta som inaktiva.</p>
+      </div>
+    </article>
+    <article class="message is-dark">
+      <div class="message-header">
+        <p>Elo-rating</p><span class="icon"><i class="fas fa-scale-balanced"></i></span>
+      </div>
+      <div class="message-body">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend lacus</em>, in mollis lectus. Donec sodales, arcu et sollicitudin porttitor, tortor urna tempor ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et sem eget, facilisis sodales sem.
+      </div>
+    </article>
+  </div>  
+</div>
+{% endblock %}
