@@ -8,7 +8,7 @@ import json
 @app.route('/')
 def index():
     players = Player.query.filter_by(is_active=True).order_by(Player.rating.desc(), Player.name.asc()).all()
-    results = Result.query.order_by(Result.date_played.desc()).limit(5).all()
+    results = Result.query.order_by(Result.date_played.desc()).limit(10).all()
     latest_results = Result.query.order_by(Result.date_played.desc()).limit(1).all()
 
     latest_players = []
