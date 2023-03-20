@@ -42,7 +42,7 @@ def player_detail(player_slug):
 
     if not player:
         abort(404)
-    return render_template('player_detail.html', player=player, rating_history=rating_history, rating_history_json=json.dumps(rating_history))
+    return render_template('player_detail.html', player=player, rating_history_json=json.dumps(rating_history))
 
 
 @app.route('/ny_spelare', methods=['GET', 'POST'])
