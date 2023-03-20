@@ -5,6 +5,7 @@
       <th>Namn</th>
       <th class="has-text-centered">Vinster</th>
       <th class="has-text-centered">Förluster</th>
+      <th class="has-text-centered">Vinster</th>
       <th>Rating</th>
     </tr>
   </thead>
@@ -15,6 +16,7 @@
         <td>{{ player.name }}</a></td>
         <td class="has-text-centered">{{ player.wins }}</td>
         <td class="has-text-centered">{{ player.losses }}</td>
+        <td class="has-text-centered">{{ player.win_ratio() }}%</td>
         <td>
           {% if player in latest_players %}
             {{ player.rating|round|int }}
