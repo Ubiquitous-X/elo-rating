@@ -14,7 +14,13 @@
     <div class="card">
       <div class="card-content">
         <p class="title is-4"><span class="icon"><i class="fas fa-star fa-xs"></i></span> Rating</p>
-        <p class="subtitle is-5">{{ player.rating|round|int }}</p>
+        <p class="subtitle is-5">{{ player.rating|round|int }}
+        {% if player.latest_rating_change < 0 %}
+            <span class="has-text-danger is-size-6">{{ player.latest_rating_change|round|int }}</span>
+            {% elif player.latest_rating_change > 0 %}
+            <span class="has-text-success is-size-6">+{{ player.latest_rating_change|round|int }}</span>
+            {% endif %}
+          </p>
       </div>
     </div>
   </div>
