@@ -45,3 +45,11 @@ table.is-fullwidth thead th {
 .table2 tbody td {
   font-size: 18px;
 }
+
+.stor-text {
+  font-size: 1.2em;
+}
+
+.ej-fet {
+  font-weight: normal;
+}

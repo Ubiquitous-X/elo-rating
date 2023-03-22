@@ -10,7 +10,6 @@
           <th>Fönstersida <span class="is-size-6">({{ windowside_wins|round|int }}%)</span></th>
           <th>Väggsida <span class="is-size-6">({{ wallside_wins|round|int }}%)</span></th>
           <th>Poäng</th>
-          <th>Vinnare</th>
           <th class="has-text-centered">Radera</th>
         </tr>
       </thead>
@@ -22,7 +21,6 @@
           <td style="color: {% if result.winner == result.player2 %}green{% else %}red{% endif %};">{{ result.player2 }}</td>
           <td style="color: {% if result.winner == result.player1 %}green{% else %} {% if result.winner == result.player2 %}red{% endif %} {% endif %};">
             {{ result.player1_score }} - <span style="color: {% if result.winner == result.player2 %}green{% else %}red{% endif %};">{{ result.player2_score }}</span></td>
-          <td style="color: green">{{ result.winner }}</td>
           <td class="has-text-centered">
             <form action="{{ url_for('delete_result', result_id=result.id) }}" method="POST" 
               onsubmit="return confirm('VARNING!\n\nÄven om ett resultat raderas så backas inte ratingen från den matchen. Vill du radera resultatet?')">
