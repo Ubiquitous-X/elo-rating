@@ -92,7 +92,22 @@ def deactivate_player(player_slug):
 @app.route('/resultat', methods=['GET'])
 def get_results():
     results = Result.query.order_by(Result.date_played.desc()).all()
-    return render_template('results.html', results=results)
+
+    windowside_wins = 0
+    wallside_wins = 0
+    total_matches = len(results)
+
+    if results:
+        for result in results:
+            if result.winner == result.player1:
+                windowside_wins += 1
+            elif result.winner == result.player2:
+                wallside_wins += 1
+
+        windowside_wins = round((windowside_wins / total_matches) * 100, 2)
+        wallside_wins = round((wallside_wins / total_matches) * 100, 2)
+
+    return render_template('results.html', results=results, windowside_wins=windowside_wins, wallside_wins=wallside_wins)
 
 
 @app.route('/delete_result/<int:result_id>', methods=['POST'])
