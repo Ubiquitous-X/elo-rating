@@ -15,7 +15,6 @@ def index():
     for result in latest_results:
         latest_players.extend([result.player1, result.player2])
 
-    print(latest_players)
     return render_template('index.html', players=players, results=results, latest_players=latest_players)
 
 
@@ -42,7 +41,31 @@ def player_detail(player_slug):
 
     if not player:
         abort(404)
-    return render_template('player_detail.html', player=player, rating_history_json=json.dumps(rating_history))
+    
+    # Hämta vinstrapport som player1
+    player1_results = Result.query.filter_by(player1_id=player.id).all()
+    player1_wins = 0
+    player1_losses = 0
+    for result in player1_results:
+        if result.winner_id == player.id:
+            player1_wins += 1
+        else:
+            player1_losses += 1
+    player1_wr = player1_wins / max((player1_wins + player1_losses), 1)
+    
+    # Hämta vinstrapport som player2
+    player2_results = Result.query.filter_by(player2_id=player.id).all()
+    player2_wins = 0
+    player2_losses = 0
+    for result in player2_results:
+        if result.winner_id == player.id:
+            player2_wins += 1
+        else:
+            player2_losses += 1
+    player2_wr = player2_wins / max((player2_wins + player2_losses), 1)
+
+    return render_template('player_detail.html', player=player, rating_history_json=json.dumps(rating_history), player1_wins=player1_wins, 
+    player1_losses=player1_losses, player2_wins=player2_wins, player2_losses=player2_losses, player1_wr=player1_wr, player2_wr=player2_wr)
 
 
 @app.route('/ny_spelare', methods=['GET', 'POST'])

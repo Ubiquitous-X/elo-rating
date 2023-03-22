@@ -49,8 +49,40 @@
     </div>
   </div>
 </div>
-<div class="is-divider" style="width: 100%; height: 50px;"></div>
+<div class="is-divider" style="width: 100%; height: 30px;"></div>
 <canvas id="ratingChart" style="width: 100%; height: 300px;"></canvas>
+<div class="columns mt-5">
+  <div class="column">
+    <div class="card">
+      <div class="card-content columns">
+        <div class="column">
+          <p class="title is-4">Fönstersida</p>
+          <p class="stor-text">Antal vinster: {{ player1_wins }}</p>
+          <p class="stor-text">Antal förluster: {{ player1_losses }}</p>          
+        </div>
+        <div class="column">
+          <p class="title is-4">Vinstratio</p>
+          <p class="title is-4 ej-fet">{{ (player1_wr * 100)|round|int }}%</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+      <div class="card-content columns">
+        <div class="column">
+          <p class="title is-4">Väggsida</p>
+          <p class="stor-text">Antal vinster: {{ player2_wins }}</p>
+          <p class="stor-text">Antal förluster: {{ player2_losses }}</p>          
+        </div>
+        <div class="column">
+          <p class="title is-4">Vinstratio</p>
+          <p class="title is-4 ej-fet">{{ (player2_wr * 100)|round|int }}%</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
   var ctx = document.getElementById('ratingChart').getContext('2d');
   var rating_history = JSON.parse('{{ rating_history_json|safe }}');
