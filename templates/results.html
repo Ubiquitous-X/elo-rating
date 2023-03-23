@@ -16,7 +16,7 @@
       <tbody>
         {% for result in results %}
         <tr>
-          <td>{{ result.date_played.strftime('%Y-%m-%d kl %H:%M') }}</td>
+          <td>{{ result.date_played.strftime('%Y-%m-%d') }}</td>
           <td style="color: {% if result.winner == result.player1 %}green{% else %}red{% endif %};">{{ result.player1 }}</td>
           <td style="color: {% if result.winner == result.player2 %}green{% else %}red{% endif %};">{{ result.player2 }}</td>
           <td style="color: {% if result.winner == result.player1 %}green{% else %} {% if result.winner == result.player2 %}red{% endif %} {% endif %};">
