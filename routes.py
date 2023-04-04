@@ -3,6 +3,7 @@ from app import app, db
 from models import Player, Result, PlayerRating
 from slugify import slugify
 from sqlalchemy import func, or_
+from datetime import datetime
 import json
 
 @app.route('/')
@@ -10,12 +11,13 @@ def index():
     players = Player.query.filter_by(is_active=True).order_by(Player.rating.desc(), Player.name.asc()).all()
     results = Result.query.order_by(Result.date_played.desc()).limit(10).all()
     latest_results = Result.query.order_by(Result.date_played.desc()).limit(1).all()
+    year = datetime.now().strftime("%Y")
 
     latest_players = []
     for result in latest_results:
         latest_players.extend([result.player1, result.player2])
 
-    return render_template('index.html', players=players, results=results, latest_players=latest_players)
+    return render_template('index.html', players=players, results=results, latest_players=latest_players, year=year)
 
 
 @app.route('/info')
@@ -206,27 +208,8 @@ def save_result():
         flash('En spelare kan inte möta sig själv', 'danger')
         return redirect(url_for('index'))
 
-    # Hämta antalet spelade matcher för båda spelarna för K_FACTOR
-    num_games_player1 = player1.num_games()
-    num_games_player2 = player2.num_games()
-
-    if num_games_player1 < 20:
-        K_FACTOR_PLAYER1 = 24
-    elif num_games_player1 < 50:
-        K_FACTOR_PLAYER1 = 18
-    elif num_games_player1 < 100:
-        K_FACTOR_PLAYER1 = 12
-    else:
-        K_FACTOR_PLAYER1 = 8
-
-    if num_games_player2 < 20:
-        K_FACTOR_PLAYER2 = 24
-    elif num_games_player2 < 50:
-        K_FACTOR_PLAYER2 = 18
-    elif num_games_player2 < 100:
-        K_FACTOR_PLAYER2 = 12
-    else:
-        K_FACTOR_PLAYER2 = 8
+    # K-faktorn. Lägre faktor ger mindre svängningar
+    K_FACTOR = 24
 
     # Beräkna förväntat resultat för spelarna
     player1_expected = 1 / (1 + 10 ** ((player2.rating - player1.rating) / 400))
@@ -253,8 +236,8 @@ def save_result():
     score_factor = max(1, (score_diff / 2 + 3) / 4)
 
     # Beräkna ratingförändringen för båda spelarna
-    player1_rating_change = round(K_FACTOR_PLAYER1 * (player1_result - player1_expected - min_rating_change / 800) * score_factor)
-    player2_rating_change = round(K_FACTOR_PLAYER2 * (player2_result - player2_expected - min_rating_change / 800) * score_factor)
+    player1_rating_change = round(K_FACTOR * (player1_result - player1_expected - min_rating_change / 800) * score_factor)
+    player2_rating_change = round(K_FACTOR * (player2_result - player2_expected - min_rating_change / 800) * score_factor)
 
     player1.rating += player1_rating_change
     player2.rating += player2_rating_change
