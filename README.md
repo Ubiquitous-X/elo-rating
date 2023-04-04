@@ -8,7 +8,7 @@ Elo-rating är en algoritm för att beräkna spelares relativa skicklighet i spe
 
 Beräkningarna som görs i koden syftar till att uppdatera spelarnas Elo-rating efter varje match, beroende på deras förväntade resultat och det faktiska resultatet av matchen. Förväntade resultat beräknas baserat på spelarnas Elo-rating före matchen, och sedan justeras ratingen baserat på det faktiska resultatet.
 
-Flera parametrar används i beräkningen, bland annat antalet spel som spelarna har spelat tidigare, så kallat "K-factor". Detta påverkar hur mycket en spelares rating kommer att förändras efter varje match, med högre K-factor för mindre erfarna spelare. Andra faktorer inkluderar skillnaden i rating mellan spelarna, det faktiska resultatet och hur många ratingpoäng som den lägre rankade spelaren bör vinna för att inte förlora för många poäng.
+Flera parametrar används i beräkningen, bland annat antalet spel som spelarna har spelat tidigare, så kallat "K-factor". Detta påverkar hur mycket en spelares rating kommer att förändras efter varje match. Andra faktorer inkluderar skillnaden i rating mellan spelarna, det faktiska resultatet och hur många ratingpoäng som den lägre rankade spelaren bör vinna för att inte förlora för många poäng.
 
 I koden beräknas förväntade poäng för varje spelare baserat på deras Elo-rating före matchen, och sedan jämförs detta med det faktiska resultatet. Baserat på detta beräknas skillnaden i rating som varje spelare ska tilldelas efter matchen. Slutligen uppdateras spelarnas Elo-rating i enlighet med dessa skillnader.
 
