@@ -6,12 +6,16 @@ Alla filer ligger lokalt, så ingen internetanslutning krävs, då det kan vara 
 ### Elo rating
 Elo-rating är en algoritm för att beräkna spelares relativa skicklighet i spel, baserat på deras resultat mot andra spelare. Det används oftast i schack, men också i andra spel som till exempel tennis och brädspel.
 
-Beräkningarna som görs i koden syftar till att uppdatera spelarnas Elo-rating efter varje match, beroende på deras förväntade resultat och det faktiska resultatet av matchen. Förväntade resultat beräknas baserat på spelarnas Elo-rating före matchen, och sedan justeras ratingen baserat på det faktiska resultatet.
+För att använda detta system krävs att två spelare identifieras och deras respektive poäng i en match registreras.
 
-Flera parametrar används i beräkningen, bland annat antalet spel som spelarna har spelat tidigare, så kallat "K-factor". Detta påverkar hur mycket en spelares rating kommer att förändras efter varje match. Andra faktorer inkluderar skillnaden i rating mellan spelarna, det faktiska resultatet och hur många ratingpoäng som den lägre rankade spelaren bör vinna för att inte förlora för många poäng.
+En "K-faktor" på 24 används för att anpassa hur mycket en spelares rating kommer att ändras baserat på resultatet. En högre K-faktor leder till större ratingändringar.
 
-I koden beräknas förväntade poäng för varje spelare baserat på deras Elo-rating före matchen, och sedan jämförs detta med det faktiska resultatet. Baserat på detta beräknas skillnaden i rating som varje spelare ska tilldelas efter matchen. Slutligen uppdateras spelarnas Elo-rating i enlighet med dessa skillnader.
+Förväntade resultat för varje spelare beräknas med hjälp av Elo-ratingformeln. Detta ger en uppskattning av sannolikheten för att varje spelare kommer att vinna matchen baserat på deras tidigare rating.
 
-För att se till att ratingen inte sjunker för mycket för en förlorande spelare så finns också en minsta möjliga ratingförändring som kan ske. Detta görs genom att lägga till en konstant, 24, till den minsta möjliga ratingförändringen. Det finns också en faktor som tar hänsyn till hur stor skillnaden i poäng var mellan spelarna för att justera ratingförändringen.
+Vinnaren av matchen bestäms och poängskillnaden räknas ut. Om en spelare vinner med en högre poäng än den andra, kommer den att få en ratingökning och den andra kommer att få en ratingminskning.
 
-Så sammanfattningsvis, koden använder Elo-rating algoritmen för att uppdatera spelarnas skicklighet efter varje match, baserat på deras förväntade resultat och det faktiska resultatet av matchen. Detta görs genom att beräkna skillnaden i förväntade poäng, den minsta möjliga ratingförändringen och en faktor som justerar ratingförändringen baserat på poängskillnad.
+En "min_rating_change" beräknas baserat på den förväntade poängskillnaden mellan spelarna. Detta används för att säkerställa att ratingändringen inte blir för stor eller för liten.
+
+Ett "score_factor" beräknas baserat på poängskillnaden i matchen. Detta påverkar också hur mycket en spelares rating kommer att ändras.
+
+Slutligen beräknas ratingändringen för varje spelare med hjälp av Elo-ratingformeln, och deras rating justeras. Om en spelares rating skulle sjunka under 100, sätts den till 100 för att undvika negativa ratingvärden.
