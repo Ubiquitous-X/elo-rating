@@ -3,6 +3,8 @@ En app skriven med Flask som ramverk och Bulma CSS för presentation. Denna app 
 
 Alla filer ligger lokalt, så ingen internetanslutning krävs, då det kan vara något problematiskt att få in en RaspberryPi på företagets nätverk.
 
+Observera! Python 3.12 krävs. Python 3.13 stöds ännu inte.
+
 ### Elo rating
 Elo-rating är en algoritm för att beräkna spelares relativa skicklighet i spel, baserat på deras resultat mot andra spelare. Det används oftast i schack, men också i andra spel som till exempel tennis och brädspel.
 
